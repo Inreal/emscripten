@@ -86,7 +86,7 @@ def no_chrome(note='chome is not supported'):
 def no_swiftshader(f):
   def decorated(self):
     if is_chrome() and '--use-gl=swiftshader' in EMTEST_BROWSER:
-      return self.skipTest('not compatible with swiftshader')
+      self.skipTest('not compatible with swiftshader')
     return f(self)
 
   return decorated
@@ -3075,7 +3075,7 @@ window.close = function() {
       self.btest('emterpreter_async.cpp', '1', args=['-s', 'EMTERPRETIFY=1', '-s', 'EMTERPRETIFY_ASYNC=1', '-O' + str(opts), '-g2'])
 
   def test_emterpreter_async_2(self):
-    # Error.stackTraceLimit default to 10 in chrome by this test relies on more
+    # Error.stackTraceLimit default to 10 in chrome but this test relies on more
     # than 40 stack frames being reported.
     with open('pre.js', 'w') as f:
       f.write('Error.stackTraceLimit = 80;\n')
@@ -3407,8 +3407,7 @@ window.close = function() {
     self.btest(path_from_root('tests', 'pthread', 'test_pthread_cancel.cpp'), expected='1', args=['-O3', '-s', 'USE_PTHREADS=1', '-s', 'PTHREAD_POOL_SIZE=8'])
 
   # Test pthread_kill() operation
-  # This test hangs the chrome render process, and keep subsequent tests from passing too
-  @no_chrome('pthread_kill hangs chrome renderer')
+  @no_chrome('pthread_kill hangs chrome renderer, and keep subsequent tests from passing')
   def test_pthread_kill(self):
     self.btest(path_from_root('tests', 'pthread', 'test_pthread_kill.cpp'), expected='0', args=['-O3', '-s', 'USE_PTHREADS=1', '-s', 'PTHREAD_POOL_SIZE=8'])
 
