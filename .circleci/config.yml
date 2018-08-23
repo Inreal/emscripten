@@ -195,9 +195,10 @@ jobs:
           name: install package dependencies
           command: |
             apt-get update -q
-            # install chromium-browser in order to ensure we have all the
+            # install chromium-browser in order to ensure we have most of the
             # dependecies for chrome.
-            apt-get install -q -y unzip xvfb chromium-browser openjdk-9-jre-headless
+            EXTRA_CHROME_DEPS="lsb-release fonts-liberation libappindicator3-1"
+            apt-get install -q -y unzip xvfb chromium-browser openjdk-9-jre-headless $EXTRA_CHROME_DEPS
       - run:
           name: download chrome
           command: |
