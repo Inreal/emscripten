@@ -201,8 +201,10 @@ jobs:
       - run:
           name: download chrome
           command: |
-            wget http://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/583421/chrome-linux.zip
-            unzip -q chrome-linux.zip
+            #wget http://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/583421/chrome-linux.zip
+            #unzip -q chrome-linux.zip
+            wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+            sudo dpkg -i google-chrome-stable_current_amd64.deb
       - run:
           name: run tests
           command: |
@@ -210,7 +212,8 @@ jobs:
             # this flag for now: https://crbug.com/638180
             CHROME_FLAGS_BASE="--no-first-run -start-maximized --no-sandbox --use-gl=swiftshader"
             CHROME_FLAGS_WASM="--enable-features=WebAssembly --enable-features=SharedArrayBuffer --disable-features=WebAssemblyTrapHandler --js-flags=\"--experimental-wasm-threads --harmony-sharedarraybuffer\""
-            export EMTEST_BROWSER="xvfb-run $HOME/chrome-linux/chrome $CHROME_FLAGS_BASE $CHROME_FLAGS_WASM"
+            #export EMTEST_BROWSER="xvfb-run $HOME/chrome-linux/chrome $CHROME_FLAGS_BASE $CHROME_FLAGS_WASM"
+            export EMTEST_BROWSER="xvfb-run /usr/bin/google-chrome-stable $CHROME_FLAGS_BASE $CHROME_FLAGS_WASM"
             # Just run a subset of the tests for now.  To be expanded.
             EMCC_CORES=4 ./emscripten/tests/runner.py browser.test_[a-e]*
   test-ab:
@@ -289,50 +292,5 @@ workflows:
           requires:
             - build
       - test-browser-chrome:
-          requires:
-            - build
-      - test-ab:
-          requires:
-            - build
-      - test-c:
-          requires:
-            - build
-      - test-d:
-          requires:
-            - build
-      - test-e:
-          requires:
-            - build
-      - test-f:
-          requires:
-            - build
-      - test-ghi:
-          requires:
-            - build
-      - test-jklmno:
-          requires:
-            - build
-      - test-p:
-          requires:
-            - build
-      - test-qrst:
-          requires:
-            - build
-      - test-uvwxyz:
-          requires:
-            - build
-      - test-binaryen0:
-          requires:
-            - build
-      - test-binaryen1:
-          requires:
-            - build
-      - test-binaryen2:
-          requires:
-            - build
-      - test-binaryen3:
-          requires:
-            - build
-      - test-sanity:
           requires:
             - build
